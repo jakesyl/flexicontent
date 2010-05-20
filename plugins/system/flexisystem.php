@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.5 stable $Id$
+ * @version 1.5 stable $Id: flexisystem.php 183 2009-11-18 10:30:48Z vistamedia $
  * @plugin 1.1
  * @package Joomla
  * @subpackage FLEXIcontent
@@ -35,21 +35,13 @@ class plgSystemFlexisystem extends JPlugin
 		parent::__construct( $subject, $config );
 
 		$fparams =& JComponentHelper::getParams('com_flexicontent');
-		if (!defined('FLEXI_SECTION'))		define('FLEXI_SECTION'		, $fparams->get('flexi_section'));
-		if (!defined('FLEXI_ACCESS')) 		define('FLEXI_ACCESS'		, (JPluginHelper::isEnabled('system', 'flexiaccess') && version_compare(PHP_VERSION, '5.0.0', '>')) ? 1 : 0);
+		if (!defined('FLEXI_SECTION'))		define('FLEXI_SECTION', $fparams->get('flexi_section'));
+		if (!defined('FLEXI_ACCESS')) 		define('FLEXI_ACCESS', (JPluginHelper::isEnabled('system', 'flexiaccess') && version_compare(PHP_VERSION, '5.0.0', '>')) ? 1 : 0);
 		if (!defined('FLEXI_CACHE')) 		define('FLEXI_CACHE'		, $fparams->get('advcache', 1));
 		if (!defined('FLEXI_CACHE_TIME'))	define('FLEXI_CACHE_TIME'	, $fparams->get('advcache_time', 3600));
 		if (!defined('FLEXI_CACHE_GUEST'))	define('FLEXI_CACHE_GUEST'	, $fparams->get('advcache_guest', 1));
-		if (!defined('FLEXI_GC'))			define('FLEXI_GC'			, $fparams->get('purge_gc', 1));
-		if (!defined('FLEXI_FISH'))			define('FLEXI_FISH'			, ($fparams->get('flexi_fish', 0) && (JPluginHelper::isEnabled('system', 'jfdatabase'))) ? 1 : 0);
 
         JPlugin::loadLanguage('com_flexicontent', JPATH_SITE);
-        
-/*
-        echo "<xmp>";
-        var_export($_REQUEST);
-        echo "</xmp>";
-*/
 	}
 	
 	/**
@@ -106,7 +98,7 @@ class plgSystemFlexisystem extends JPlugin
 				$app->redirect($urlItems,'');
 				return false;
 
-			} elseif ($option == 'com_sections' && $applicationName == 'administrator' && $user->gid <= $minsecs) {
+			} else if ($option == 'com_sections' && $applicationName == 'administrator' && $user->gid <= $minsecs) {
 				// url to redirect
 				$urlItems = 'index.php?option=com_flexicontent&view=categories';
 				
@@ -116,7 +108,7 @@ class plgSystemFlexisystem extends JPlugin
 				}
 				return false;
 			
-			} elseif ($option == 'com_categories' && $applicationName == 'administrator' && $user->gid <= $mincats) {
+			} else if ($option == 'com_categories' && $applicationName == 'administrator' && $user->gid <= $mincats) {
 				// url to redirect
 				$urlItems = 'index.php?option=com_flexicontent&view=categories';
 				
@@ -124,6 +116,20 @@ class plgSystemFlexisystem extends JPlugin
 				if ($section == 'com_content') {
 					$app->redirect($urlItems,'');
 				}
+				return false;
+
+			} elseif (($option != 'com_content' && $option != 'com_login') && $applicationName == 'administrator' && $user->gid < 25) {
+				// @todo : must be placed in the flexiaccess plugin
+				// url to redirect
+				$urlIndex	= JURI::current();
+				$message	= JText::_('ALERTNOTAUTH');
+
+				if (JPluginHelper::isEnabled('system', 'flexiaccess') && version_compare(PHP_VERSION, '5.0.0', '>')) {
+					if(!FAccess::checkComponentAccess($option,'manage','users',$user->gmid)) {
+						$app->redirect($urlIndex, $message);
+					}
+				}
+ 
 				return false;
 			}
 		}

@@ -1,6 +1,6 @@
 <?php
 /**
- * @version 1.0 $Id$
+ * @version 1.0 $Id: flexisearch.php 29 2009-06-19 19:51:29Z vistamedia $
  * @package Joomla
  * @subpackage FLEXIcontent
  * @copyright (C) 2009 Emmanuel Danan - www.vistamedia.fr
@@ -55,10 +55,6 @@ function plgSearchFlexisearch( $text, $phrase='', $ordering='', $areas=null )
 	$gid	= (int) $user->get('aid');
     // Get the WHERE and ORDER BY clauses for the query
 	$params 	= & $mainframe->getParams('com_flexicontent');
-
-	// define section
-	if (!defined('FLEXI_SECTION')) 		define('FLEXI_SECTION'		, $params->get('flexi_section'));
-
 	// show unauthorized items
 	$show_noauth = $params->get('show_noauth', 0);
 
@@ -141,7 +137,7 @@ function plgSearchFlexisearch( $text, $phrase='', $ordering='', $areas=null )
 		}
 	}
 
-	$query 	= 'SELECT DISTINCT a.title AS title,a.sectionid'
+	$query 	= 'SELECT DISTINCT a.title AS title,'
 			. ' a.created AS created,'
 			. ' ie.search_index AS text,'
 			. ' "2" AS browsernav,'
@@ -165,10 +161,7 @@ function plgSearchFlexisearch( $text, $phrase='', $ordering='', $areas=null )
 	if(isset($list))
 	{
 		foreach($list as $key => $row) {
-			if($row->sectionid==FLEXI_SECTION)
-				$list[$key]->href = FlexicontentHelperRoute::getItemRoute($row->slug, $row->categoryslug);
-			else
-				$list[$key]->href = JRoute::_(ContentHelperRoute::getArticleRoute($row->slug, $row->catslug, $row->sectionid));
+			$list[$key]->href = FlexicontentHelperRoute::getItemRoute($row->slug, $row->categoryslug);
 		}
 	}
 
