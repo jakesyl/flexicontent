@@ -386,8 +386,7 @@ class plgFlexicontent_fieldsWeblink extends JPlugin
 				$href = JRoute::_( 'index.php?option=com_flexicontent&fid='. $field->id .'&cid='.$field->item_id.'&ord='.($n+1).'&task=weblink' );
 			
 			// Create indirect link to web-link address with custom displayed text
-			if( empty($linktext) )
-				$linktext = $title ? $title: $this->cleanurl($value['link']);
+			$linktext = $title ? $title: $this->cleanurl($value['link']);
 			$field->{$prop}[$n] = $pretext. '<a href="' .$href. '" '.$link_params.'>' .$linktext. '</a>' .$posttext;
 			
 			// HITS: either as icon or as inline text or both

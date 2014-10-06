@@ -335,15 +335,17 @@ class modFlexicontentHelper
 					{
 						if ($mod_image_custom_display)
 						{
-							list($fieldname, $varname) = preg_split('/##/',$mod_image_custom_display);
+							@list($fieldname, $varname) = preg_split('/##/',$mod_image_custom_display);
 							$fieldname = trim($fieldname); $varname = trim($varname);
+							$varname = $varname ? $varname : 'display';
 							$thumb_rendered = FlexicontentFields::getFieldDisplay($row, $fieldname, null, $varname, 'module');
 							$src = '';
 						}
 						else if ($mod_image_custom_url)
 						{
-							list($fieldname, $varname) = preg_split('/##/',$mod_image_custom_url);
+							@list($fieldname, $varname) = preg_split('/##/',$mod_image_custom_url);
 							$fieldname = trim($fieldname); $varname = trim($varname);
+							$varname = $varname ? $varname : 'display';
 							$src =  FlexicontentFields::getFieldDisplay($row, $fieldname, null, $varname, 'module');
 						}
 						else if ($mod_image)
