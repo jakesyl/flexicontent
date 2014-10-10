@@ -375,12 +375,15 @@ window.addEvent('domready', function() {
 				<div style="float:left; margin:2px 48px 0px 0px;">
 					<label class="label"><?php echo JText::_( 'FLEXI_SEARCH' ); ?></label>
 					<span class="radio"><?php echo $this->lists['scope']; ?></span>
-					<input type="text" name="search" id="search" value="<?php echo $this->lists['search']; ?>" class="inputbox" />
+					<input type="text" name="search" id="search" placeholder="<?php echo JText::_( 'FLEXI_SEARCH' ); ?>" value="<?php echo $this->lists['search']; ?>" class="inputbox" />
 				</div>
 				
-				<input type="button" class="fc_button" onclick="jQuery('#mainChooseColBox').slideToggle();" value="<?php echo JText::_( 'FLEXI_COLUMNS' ); ?>" />
-				<input type="button" class="fc_button" onclick="jQuery('#stateGroupsBox').slideToggle();" value="<?php echo JText::_( 'FLEXI_STATE_GROUPS' ); ?>" />
-				<input type="button" class="fc_button" onclick="jQuery('#filterline').slideToggle('slow');" value="<?php echo JText::_( 'FLEXI_FILTERS' ); ?>" />
+				<?php $_class = FLEXI_J30GE ? ' btn' : ' fc_button'; ?>
+				<div class="btn-group" style="margin: 2px 0 6px -3px;">
+				<input type="button" class="<?php echo $_class; ?>" onclick="jQuery('#mainChooseColBox').slideToggle();" value="<?php echo JText::_( 'FLEXI_COLUMNS' ); ?>" />
+				<input type="button" class="<?php echo $_class; ?>" onclick="jQuery('#stateGroupsBox').slideToggle();" value="<?php echo JText::_( 'FLEXI_STATE_GROUPS' ); ?>" />
+				<input type="button" class="<?php echo $_class; ?>" onclick="jQuery('#filterline').slideToggle('slow');" value="<?php echo JText::_( 'FLEXI_FILTERS' ); ?>" />
+				</div>
 				<!--
 				<input type="button" class="button" id="hide_filters" value="<?php echo JText::_( 'FLEXI_HIDE_FILTERS' ); ?>" />
 				<input type="button" class="button" id="show_filters" value="<?php echo JText::_( 'FLEXI_DISPLAY_FILTERS' ); ?>" />
@@ -734,6 +737,14 @@ window.addEvent('domready', function() {
 
 	<tbody <?php echo $ordering_draggable && $this->CanOrder && $this->ordering ? 'id="sortable_fcitems"' : ''; ?> >
 		<?php
+		if (FLEXI_J16GE) {
+			$canCheckinRecords = $user->authorise('core.admin', 'checkin');
+		} else if (FLEXI_ACCESS) {
+			$canCheckinRecords = ($user->gid < 25) ? FAccess::checkComponentAccess('com_checkin', 'manage', 'users', $user->gmid) : 1;
+		} else {
+			$canCheckinRecords = $user->gid >= 24;
+		}
+		
 		$k = 0;
 		if (FLEXI_J16GE)
 			$date_format = (($date_format = JText::_( 'FLEXI_DATE_FORMAT_FLEXI_ITEMS_J16GE' )) == 'FLEXI_DATE_FORMAT_FLEXI_ITEMS_J16GE') ? "d/m/y H:i" : $date_format;
@@ -835,13 +846,8 @@ window.addEvent('domready', function() {
 
 				// Display an icon with checkin link, if current user has checked out current item
 				if ($row->checked_out) {
-					if (FLEXI_J16GE) {
-						$canCheckin = $user->authorise('core.admin', 'checkin');
-					} else if (FLEXI_ACCESS) {
-						$canCheckin = ($user->gid < 25) ? FAccess::checkComponentAccess('com_checkin', 'manage', 'users', $user->gmid) : 1;
-					} else {
-						$canCheckin = $user->gid >= 24;
-					}
+					// Record check-in is allowed if either (a) current user has Global Checkin privilege OR (b) record checked out by current user
+					$canCheckin = $canCheckinRecords || $row->checked_out == $user->id;
 					if ($canCheckin) {
 						//if (FLEXI_J16GE && $row->checked_out == $user->id) echo JHtml::_('jgrid.checkedout', $i, $row->editor, $row->checked_out_time, 'items.', $canCheckin);
 						$task_str = FLEXI_J16GE ? 'items.checkin' : 'checkin';
