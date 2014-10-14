@@ -8,16 +8,23 @@
 	<release>20 May 2014</release>
 	<description>Category HTML5 layout similar to the Joomla blog layout. Title, description and image are set as category parameters</description>
 	<params addpath="/administrator/components/com_flexicontent/elements">
-		
-			<param name="lead_num" type="text" size="3" default="" label="FLEXI_NUM_LEADING" description="FLEXI_NUM_LEADING_DESC" />
-			<param name="intro_cols" type="radio" default="" label="FLEXI_INTRO_COLS" description="FLEXI_INTRO_COLS_DESC" class="btn-group btn-group-yesno">
+			
+			
+			<param name="leadingitems_sep" type="separator" hr="false" default="FLEXI_LEADING_ITEMS" description="FLEXI_LEADING_ITEMS_DESC" level="level1" menu="hide" />
+			<param name="lead_num" type="text" size="3" default="" label="FLEXI_LEADING_NUM" description="FLEXI_LEADING_NUM_DESC" />
+			<param name="lead_cols" type="radio" default="" label="FLEXI_MAX_ITEM_COLS_RESPONSIVE" description="FLEXI_MAX_ITEM_COLS_RESPONSIVE_DESC" class="btn-group btn-group-yesno">
 				<option value="">FLEXI_USE_GLOBAL</option>
 				<option value="1">FLEXI_1_COL</option>
 				<option value="2">FLEXI_2_COLS</option>
 				<option value="3">FLEXI_3_COLS</option>
 				<option value="4">FLEXI_4_COLS</option>
 			</param>
-			<param name="leadingitems_sep" type="separator" hr="false" default="FLEXI_LEADING_ITEMS" description="FLEXI_LEADING_ITEMS_DESC" level="level1" menu="hide" />
+			<param name="lead_placement" type="radio" default="" label="FLEXI_ITEMS_PLACEMENT" description="FLEXI_ITEMS_PLACEMENT_DESC" class="btn-group btn-group-yesno">
+				<option value="">FLEXI_USE_GLOBAL</option>
+				<option value="0">FLEXI_NONE</option>
+				<option value="1">FLEXI_AS_MASONRY_TILES</option>
+			</param>
+			
 			<param name="leadingitems_text_sep" type="separator" hr="false" default="FLEXI_TEXT" description="FLEXI_TEXT_DESC" level="level2" menu="hide" />
 			<param name="lead_strip_html" type="radio" default="" label="FLEXI_STRIP_N_CUT" description="FLEXI_STRIP_N_CUT_DESC" class="btn-group btn-group-yesno">
 				<option value="">FLEXI_USE_GLOBAL</option>
