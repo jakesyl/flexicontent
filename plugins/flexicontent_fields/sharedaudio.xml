@@ -59,7 +59,7 @@
 				<option value="0">FLEXI_NO</option>
 				<option value="1">FLEXI_YES</option>
 			</field>
-			<field name="embedly_key" type="text" default="" size="20" label="PLG_FLEXICONTENT_FIELDS_SHAREDAUDIO_EMBEDLY_KEY" description="PLG_FLEXICONTENT_FIELDS_SHAREDAUDIO_EMBEDLY_KEY_DESC" />	
+			<field name="embedly_key" type="text" default="" size="20" label="PLG_FLEXICONTENT_FIELDS_SHAREDAUDIO_EMBEDLY_KEY" description="PLG_FLEXICONTENT_FIELDS_SHAREDAUDIO_EMBEDLY_KEY_DESC" />
 		</params>
 	
 	<languages>
