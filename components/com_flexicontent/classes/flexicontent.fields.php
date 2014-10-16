@@ -88,7 +88,7 @@ class FlexicontentFields
 				FlexicontentFields::getFieldDisplay($items, $field_name, $values=null, $method, $view);
 				// Add to return array
 				foreach ($items as $item) {
-					$return[$item->id][$field_name] = $item->fields[$field_name]->display;
+					$return[$item->id][$field_name] = $item->fields[$field_name]->$method;
 				}
 			}
 		}
